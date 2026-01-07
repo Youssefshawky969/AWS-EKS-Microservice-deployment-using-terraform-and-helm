@@ -38,6 +38,15 @@ jobs:
           }' > ~/.terraformrc
 
 
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Update kubeconfig
+        run: |
+          aws eks update-kubeconfig \
+            --region $AWS_REGION \
+            --name $EKS_CLUSTER_NAME
+      
       - name: Terraform Init
         working-directory: terraform/workload
         run: terraform init
