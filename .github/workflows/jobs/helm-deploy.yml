@@ -12,23 +12,26 @@ jobs:
 
     steps:
       
-      - name: Update kubeconfig- name: Checkout repository
-          uses: actions/checkout@v4
+      - uses: actions/checkout@v4
 
-        - name: Setup Terraform
-          uses: hashicorp/setup-terraform@v3
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region:            ${{ secrets.AWS_REGION }}
 
-        - name: Authenticate to Terraform Cloud
-          run: |
-            echo 'credentials "app.terraform.io" {
-              token = "${{ secrets.TF_API_TOKEN }}"
-            }' > ~/.terraformrc
+
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
+
+      - name: Update kubeconfig
         run: |
           aws eks update-kubeconfig \
             --region $AWS_REGION \
             --name $EKS_CLUSTER_NAME
 
-      - name: Helm Upgrade
+      - name: Helm deploy
         run: |
           helm upgrade --install platform ./helm \
             --set image.tag=${{ github.sha }}
