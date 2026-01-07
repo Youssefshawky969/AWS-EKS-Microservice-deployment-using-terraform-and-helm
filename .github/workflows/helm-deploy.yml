@@ -30,7 +30,23 @@ jobs:
       - name: Update kubeconfig
         run: aws eks update-kubeconfig --region ${{ secrets.AWS_REGION }} --name ${{secrets.EKS_CLUSTER_NAME}}
 
-      - name: Helm deploy
+      - name: Helm deploy auth
         run: |
-          helm upgrade --install platform ./helm \
+          helm upgrade --install auth helm/auth --namespace dev
             --set image.tag=${{ github.sha }}
+
+
+      - name: Helm deploy auth
+        run: |
+          
+          helm upgrade --install orders helm/orders --namespace dev --set image.tag=${{ github.sha }}
+
+      - name: Helm deploy auth
+        run: |
+          helm upgrade --install payment helm/payment --namespace dev --set image.tag=${{ github.sha }}
+
+
+      - name: Deploy ingress (dev)
+        run: |
+          kubectl apply -f k8s/ingress-dev.yml
+
