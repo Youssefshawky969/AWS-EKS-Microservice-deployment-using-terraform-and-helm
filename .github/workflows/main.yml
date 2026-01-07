@@ -7,16 +7,16 @@ on:
 
 jobs:
   terraform-platform:
-    uses: ./.github/workflows/jobs/terraform-platform.yml
+    uses: ./.github/workflows/terraform-platform.yml
 
   terraform-workload:
     needs: terraform-platform
-    uses: ./.github/workflows/jobs/terraform-workload.yml
+    uses: ./.github/workflows/terraform-workload.yml
 
   build-and-push:
     needs: terraform-workload
-    uses: ./.github/workflows/jobs/build-push-ecr.yml
+    uses: ./.github/workflows/build-push-ecr.yml
 
   helm-deploy:
     needs: build-and-push
-    uses: ./.github/workflows/jobs/helm-deploy.yml
+    uses: ./.github/workflows/helm-deploy.yml
