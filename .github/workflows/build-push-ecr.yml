@@ -1,0 +1,39 @@
+name: Build and Push Images
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id:     ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region:            ${{ secrets.AWS_REGION }
+
+      - uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push Auth
+        run: |
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:${{ github.sha }} services/auth
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:${{ github.sha }}
+
+      - name: Build & Push Orders
+        run: |
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/orders:${{ github.sha }} services/orders
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/orders:${{ github.sha }}
+
+      - name: Build & Push Payment
+        run: |
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/payment:${{ github.sha }} services/payment
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/payment:${{ github.sha }}
