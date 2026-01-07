@@ -6,8 +6,6 @@ on:
 jobs:
   platform:
     runs-on: ubuntu-latest
-    env:
-      TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
     permissions:
       id-token: write
       contents: read
