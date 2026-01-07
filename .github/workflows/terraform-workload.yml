@@ -5,7 +5,7 @@ on:
 
 env:
   TF_CLOUD_ORG: youssef_eks
-  TF_WORKSPACE: eks
+  TF_WORKSPACE: eks_2
 
 jobs:
   workload:
