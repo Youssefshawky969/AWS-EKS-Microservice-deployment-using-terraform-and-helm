@@ -1,0 +1,41 @@
+name: Build and Push Images
+
+on:
+  workflow_call:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate to Terraform Cloud
+        run: |
+            echo 'credentials "app.terraform.io" {
+              token = "${{ secrets.TF_API_TOKEN }}"
+            }' > ~/.terraformrc
+
+      - uses: aws-actions/amazon-ecr-login@v2
+
+      - name: Build & Push Auth
+        run: |
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:${{ github.sha }} services/auth
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/auth:${{ github.sha }}
+
+      - name: Build & Push Orders
+        run: |
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/orders:${{ github.sha }} services/orders
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/orders:${{ github.sha }}
+
+      - name: Build & Push Payment
+        run: |
+          docker build -t $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/payment:${{ github.sha }} services/payment
+          docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/payment:${{ github.sha }}
