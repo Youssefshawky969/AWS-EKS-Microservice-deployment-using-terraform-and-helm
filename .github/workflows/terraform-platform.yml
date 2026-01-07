@@ -3,6 +3,10 @@ name: Terraform Platform
 on:
   workflow_call:
 
+env:
+  TF_CLOUD_ORG: aws_pipelines
+  TF_WORKSPACE: aws_dev
+  
 jobs:
   platform:
     runs-on: ubuntu-latest
@@ -18,6 +22,12 @@ jobs:
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate to Terraform Cloud
+        run: |
+          echo 'credentials "app.terraform.io" {
+            token = "${{ secrets.TF_API_TOKEN }}"
+          }' > ~/.terraformrc
         
 
       - name: Terraform Init
