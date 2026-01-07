@@ -16,14 +16,17 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
       - name: Authenticate to Terraform Cloud
         run: |
-          echo 'credentials "app.terraform.io" {
-            token = "${{ secrets.TFC_TOKEN }}"
-          }' > ~/.terraformrc
+          if [ -z "$TFC_TOKEN" ]; then
+            echo "TFC_TOKEN is NOT set"
+            exit 1
+          else
+            echo "TFC_TOKEN is set"
+          fi
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
 
       - name: Terraform Init
         working-directory: terraform/platform
