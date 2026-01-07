@@ -24,6 +24,7 @@ jobs:
           else
             echo "TFC_TOKEN is set"
           fi
+
           
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
