@@ -25,15 +25,15 @@ jobs:
 
       - name: Build & Push Auth
         run: |
-          docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/auth:${{ github.sha }} app/auth
+          docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/auth-service:${{ github.sha }} app/auth
           docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/auth-service:${{ github.sha }}
 
       - name: Build & Push Orders
         run: |
-          docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/orders:${{ github.sha }} app/orders
+          docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/orders-service:${{ github.sha }} app/orders
           docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/orders-service:${{ github.sha }}
 
       - name: Build & Push Payment
         run: |
-          docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/payment:${{ github.sha }} app/payment
+          docker build -t ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/payment-service:${{ github.sha }} app/payment
           docker push ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com/payment-service:${{ github.sha }}
