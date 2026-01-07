@@ -7,7 +7,7 @@ jobs:
   platform:
     runs-on: ubuntu-latest
     env:
-      TF_API_TOKEN: ${{ secrets.TFC_TOKEN }}
+      TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
     permissions:
       id-token: write
       contents: read
@@ -22,7 +22,7 @@ jobs:
       - name: Authenticate to Terraform Cloud
         run: |
           echo 'credentials "app.terraform.io" {
-            token = "${{ secrets.TF_API_TOKEN }}"
+            token = "${{ secrets.TFC_TOKEN }}"
           }' > ~/.terraformrc
 
       - name: Terraform Init
