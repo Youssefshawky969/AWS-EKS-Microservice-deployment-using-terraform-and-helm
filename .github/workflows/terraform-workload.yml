@@ -32,9 +32,9 @@ jobs:
             }' > ~/.terraformrc
 
       - name: Terraform Init
-        working-directory: infra/terraform/workload
+        working-directory: terraform/workload
         run: terraform init
 
       - name: Terraform Apply
-        working-directory: infra/terraform/workload
+        working-directory: terraform/workload
         run: terraform apply -auto-approve
