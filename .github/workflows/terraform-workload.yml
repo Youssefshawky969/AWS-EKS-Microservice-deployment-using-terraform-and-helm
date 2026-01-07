@@ -42,10 +42,7 @@ jobs:
         run: aws sts get-caller-identity
 
       - name: Update kubeconfig
-        run: |
-          aws eks update-kubeconfig \
-            --region $AWS_REGION \
-            --name $EKS_CLUSTER_NAME
+        run: aws eks update-kubeconfig --region ${{secrets.AWS_REGION}} --name ${{secrets.EKS_CLUSTER_NAME}}
       
       - name: Terraform Init
         working-directory: terraform/workload
