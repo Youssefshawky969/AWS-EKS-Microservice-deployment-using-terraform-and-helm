@@ -24,9 +24,9 @@ jobs:
           }' > ~/.terraformrc
 
       - name: Terraform Init
-        working-directory: infra/terraform/platform
+        working-directory: terraform/platform
         run: terraform init
 
       - name: Terraform Apply
-        working-directory: infra/terraform/platform
+        working-directory: terraform/platform
         run: terraform apply -auto-approve
