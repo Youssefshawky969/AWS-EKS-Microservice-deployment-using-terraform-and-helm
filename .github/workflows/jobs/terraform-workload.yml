@@ -1,0 +1,32 @@
+name: Terraform Workload
+
+on:
+  workflow_call:
+
+jobs:
+  workload:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Authenticate to Terraform Cloud
+        run: |
+            echo 'credentials "app.terraform.io" {
+              token = "${{ secrets.TF_API_TOKEN }}"
+            }' > ~/.terraformrc
+
+      - name: Terraform Init
+        working-directory: infra/terraform/workload
+        run: terraform init
+
+      - name: Terraform Apply
+        working-directory: infra/terraform/workload
+        run: terraform apply -auto-approve
