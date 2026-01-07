@@ -1,4 +1,4 @@
-name: Cloud Native Platform Full CI/CD
+name: Cloud Nattive Platform Full CI/CD
 
 on:
   push:
