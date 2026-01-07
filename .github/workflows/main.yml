@@ -12,15 +12,19 @@ permissions:
 jobs:
   terraform-platform:
     uses: ./.github/workflows/terraform-platform.yml
+    secrets: inherit
 
   terraform-workload:
     needs: terraform-platform
     uses: ./.github/workflows/terraform-workload.yml
+    secrets: inherit
 
   build-and-push:
     needs: terraform-workload
     uses: ./.github/workflows/build-push-ecr.yml
+    secrets: inherit
 
   helm-deploy:
     needs: build-and-push
     uses: ./.github/workflows/helm-deploy.yml
+    secrets: inherit
