@@ -3,11 +3,13 @@ name: Terraform Workload
 on:
   workflow_call:
 
+env:
+  TF_CLOUD_ORG: youssef_eks
+  TF_WORKSPACE: eks
+
 jobs:
   workload:
     runs-on: ubuntu-latest
-    env:
-      TFC_TOKEN: ${{ secrets.TFC_TOKEN }}
     permissions:
       id-token: write
       contents: read
@@ -24,17 +26,17 @@ jobs:
           role-to-assume:        arn:aws:iam::774305579778:role/eks-admin-role
           aws-region:            ${{ secrets.AWS_REGION }}  
 
-      - name: Authenticate to Terraform Cloud
-        run: |
-          if [ -z "$TFC_TOKEN" ]; then
-            echo "TFC_TOKEN is NOT set"
-            exit 1
-          else
-            echo "TFC_TOKEN is set"
-          fi
-
+     
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
+        
+      
+      - name: Authenticate to Terraform Cloud
+        run: |
+          echo 'credentials "app.terraform.io" {
+            token = "${{ secrets.TF_API_TOKEN }}"
+          }' > ~/.terraformrc
+
 
       - name: Terraform Init
         working-directory: terraform/workload
