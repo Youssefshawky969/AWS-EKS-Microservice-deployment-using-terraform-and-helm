@@ -1,0 +1,37 @@
+
+
+services:
+  auth:
+    build: ./auth
+    container_name: auth
+    ports:
+      - "8001:8000"
+    environment:
+      - ENV=dev
+    healthcheck:
+       test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+       interval: 10s
+       timeout: 2s
+       retries: 5
+       start_period: 10s
+
+
+  orders:
+    build: ./orders
+    container_name: orders
+    ports:
+      - "8002:8000"
+    environment:
+      - ENV=dev
+      - AUTH_SERVICE_URL=http://auth:8000
+    depends_on:
+      auth:
+        condition: service_healthy
+
+  payment:
+    build: ./payment
+    container_name: payment
+    ports:
+      - "8003:8000"
+    environment:
+      - ENV=dev           

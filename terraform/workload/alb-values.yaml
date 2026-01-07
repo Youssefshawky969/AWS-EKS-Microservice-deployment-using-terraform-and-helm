@@ -1,0 +1,5 @@
+clusterName: cloud-native-platform-eks
+
+serviceAccount:
+  create: false
+  name: aws-load-balancer-controller

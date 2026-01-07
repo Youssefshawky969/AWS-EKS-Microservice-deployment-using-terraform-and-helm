@@ -1,0 +1,14 @@
+replicaCount: 2
+
+image:
+  repository: 774305579778.dkr.ecr.us-east-1.amazonaws.com/auth-service
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8000
+
+env:
+  SERVICE_NAME: auth
+  SERVICE_PORT: "8000"

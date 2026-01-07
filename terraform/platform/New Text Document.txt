@@ -1,0 +1,4 @@
+aws eks update-kubeconfig \
+  --region us-east-1 \
+  --name cloud-native-platform-eks \
+  --role-arn arn:aws:iam::123456789012:role/cloud-native-platform-eks-cluster-role
