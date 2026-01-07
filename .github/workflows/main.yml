@@ -1,0 +1,22 @@
+name: Cloud Native Platform Full CI/CD
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  terraform-platform:
+    uses: ./.github/workflows/jobs/terraform-platform.yml
+
+  terraform-workload:
+    needs: terraform-platform
+    uses: ./.github/workflows/jobs/terraform-workload.yml
+
+  build-and-push:
+    needs: terraform-workload
+    uses: ./.github/workflows/jobs/build-push-ecr.yml
+
+  helm-deploy:
+    needs: build-and-push
+    uses: ./.github/workflows/jobs/helm-deploy.yml
