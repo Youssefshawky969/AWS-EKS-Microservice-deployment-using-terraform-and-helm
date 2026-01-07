@@ -1,0 +1,34 @@
+name: Helm Deploy
+
+on:
+  workflow_call:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: read
+
+    steps:
+      
+      - name: Update kubeconfig- name: Checkout repository
+          uses: actions/checkout@v4
+
+        - name: Setup Terraform
+          uses: hashicorp/setup-terraform@v3
+
+        - name: Authenticate to Terraform Cloud
+          run: |
+            echo 'credentials "app.terraform.io" {
+              token = "${{ secrets.TF_API_TOKEN }}"
+            }' > ~/.terraformrc
+        run: |
+          aws eks update-kubeconfig \
+            --region $AWS_REGION \
+            --name $EKS_CLUSTER_NAME
+
+      - name: Helm Upgrade
+        run: |
+          helm upgrade --install platform ./helm \
+            --set image.tag=${{ github.sha }}
