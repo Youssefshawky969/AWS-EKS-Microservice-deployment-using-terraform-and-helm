@@ -625,3 +625,6 @@ resource "helm_release" "alb_controller" {
 
 <img width="932" height="472" alt="Screenshot 2026-01-05 183614" src="https://github.com/user-attachments/assets/448c2dde-90b0-4baa-a483-47a7ce6ad3c5" />
 
+#### 📌 For more details read this blog post 👇:
+https://youssefshawky.hashnode.dev/a-guide-to-amazon-eks-access-and-permission
+
