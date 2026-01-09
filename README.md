@@ -1,4 +1,3 @@
-# AWS-EKS-Microservice-deployment-using-terraform-and-helm
 ## Overview
 This project demonstrates how to build a cluster using Terraform as infrastructure as code. Moreover, establish cluster connectivity using kubeconfig files and learn how to manage IAM principals through the modern EKS access entries system. Compares specialized methods for granting cloud permissions to applications, such as EKS Pod Identities and IAM roles for service accounts (IRSA). At the cluster level, the implementation of Role-Based Access Control (RBAC) to define granular permissions for users, groups, and service accounts. Utilize HCP cloud for storing state, and Github actions for CI/CD pipeline deployment.
 
